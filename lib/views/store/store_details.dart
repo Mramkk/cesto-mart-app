@@ -49,7 +49,7 @@ class _StoreDetailsState extends State<StoreDetails> {
               widText(txt: widget.store.pan),
               const SizedBox(height: 5),
               widLbl(lbl: "GSTIN No."),
-              widText(txt: widget.store.gstin),
+              widText(txt: widget.store.gstin ?? "N/A"),
               const SizedBox(height: 5),
               widLbl(lbl: "State"),
               widText(txt: widget.store.state),
@@ -70,14 +70,19 @@ class _StoreDetailsState extends State<StoreDetails> {
               widText(txt: widget.store.address),
               const SizedBox(height: 5),
               widLbl(lbl: "Document"),
-              Container(
-                height: 200,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: NetworkImage(baseUrl + widget.store.document),
-                      fit: BoxFit.cover),
-                ),
-              ),
+              Builder(builder: (context) {
+                if (widget.store.document == "null") {
+                  return Container();
+                }
+                return Container(
+                  height: 200,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: NetworkImage(baseUrl + widget.store.document),
+                        fit: BoxFit.cover),
+                  ),
+                );
+              }),
               const SizedBox(height: 100),
             ],
           ),
