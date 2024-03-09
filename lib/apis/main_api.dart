@@ -67,7 +67,6 @@ class MainApi {
     required File file,
   }) async {
     String fileName = file.path.split('/').last;
-
     FormData data = FormData.fromMap({
       "document": await MultipartFile.fromFile(
         file.path,
@@ -89,6 +88,7 @@ class MainApi {
     } on TimeoutException {
       return HttpRes(false, [], message: "Request Timeout");
     } catch (e) {
+      print(e);
       return HttpRes(false, [], message: e.toString());
     }
   }

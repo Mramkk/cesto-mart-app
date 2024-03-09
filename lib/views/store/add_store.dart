@@ -23,7 +23,7 @@ class _AddStoreState extends State<AddStore> {
   MainController mc = Get.put(MainController());
   final formKey = GlobalKey<FormState>();
   Location location = Location();
-  String filePath = '';
+  File? filePicked;
   bool isFilePicked = false;
 
   TextEditingController txtname = TextEditingController();
@@ -83,7 +83,7 @@ class _AddStoreState extends State<AddStore> {
                   keyboardType: TextInputType.emailAddress,
                   decoration: InputDecoration(
                     hintText: "Email",
-                    labelText: "* Email",
+                    labelText: "Email",
                     hintStyle: const TextStyle(
                         fontSize: 15, fontWeight: FontWeight.w400),
                     contentPadding: const EdgeInsets.symmetric(
@@ -93,12 +93,7 @@ class _AddStoreState extends State<AddStore> {
                     ),
                   ),
                   controller: txtemail,
-                  validator: (str) {
-                    if (str == "") {
-                      return "* Email required !";
-                    }
-                    return null;
-                  },
+                
                 ),
                 const SizedBox(height: 10),
                 TextFormField(
@@ -147,7 +142,7 @@ class _AddStoreState extends State<AddStore> {
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
                     hintText: "Aadhar No.",
-                    labelText: "* Aadhar No.",
+                    labelText: "Aadhar No.",
                     hintStyle: const TextStyle(
                         fontSize: 15, fontWeight: FontWeight.w400),
                     contentPadding: const EdgeInsets.symmetric(horizontal: 20),
@@ -156,19 +151,13 @@ class _AddStoreState extends State<AddStore> {
                     ),
                   ),
                   controller: txtaadhar,
-                  validator: (str) {
-                    if (str == "") {
-                      return "* Aadhar No. required !";
-                    }
-                    return null;
-                  },
                 ),
                 const SizedBox(height: 10),
                 TextFormField(
                   keyboardType: TextInputType.text,
                   decoration: InputDecoration(
                     hintText: "PAN",
-                    labelText: "* PAN",
+                    labelText: "PAN",
                     hintStyle: const TextStyle(
                         fontSize: 15, fontWeight: FontWeight.w400),
                     contentPadding: const EdgeInsets.symmetric(horizontal: 20),
@@ -177,12 +166,6 @@ class _AddStoreState extends State<AddStore> {
                     ),
                   ),
                   controller: txtpan,
-                  validator: (str) {
-                    if (str == "") {
-                      return "* PAN required !";
-                    }
-                    return null;
-                  },
                 ),
                 const SizedBox(height: 10),
                 TextFormField(
@@ -198,12 +181,6 @@ class _AddStoreState extends State<AddStore> {
                     ),
                   ),
                   controller: txtgst,
-                  // validator: (str) {
-                  //   if (str == "") {
-                  //     return "* GSTIN required !";
-                  //   }
-                  //   return null;
-                  // },
                 ),
                 const SizedBox(height: 10),
                 BlocConsumer<LocationCubit, LocationState>(
@@ -377,7 +354,7 @@ class _AddStoreState extends State<AddStore> {
                     if (file != null) {
                       setState(() {});
                       isFilePicked = true;
-                      filePath = file.path;
+                      filePicked = file;
                     } else {
                       mySnack.error(message: "No document selected !");
                     }
@@ -393,7 +370,7 @@ class _AddStoreState extends State<AddStore> {
                         image: isFilePicked
                             ? DecorationImage(
                                 image: FileImage(
-                                  File(filePath),
+                                  File(filePicked!.path),
                                 ),
                                 fit: BoxFit.cover,
                               )
@@ -443,7 +420,7 @@ class _AddStoreState extends State<AddStore> {
                           if (res.isSuccessful) {
                             var res2 = await mc.mainApi.uploadDocument(
                                 subUrl: "/store/document",
-                                file: File(filePath));
+                                file: File(filePicked!.path));
                             if (res2.isSuccessful) {
                               setState(() {});
                               isLoading = false;

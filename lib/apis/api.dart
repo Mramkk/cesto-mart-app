@@ -6,7 +6,7 @@ class Api {
   Api() {
     dio.options.baseUrl = "${baseUrl}api";
     dio.options.headers = {
-      'Content-type': 'application/json',
+      'Content-Type': 'application/json',
       'Accept': 'application/json',
     };
   }
